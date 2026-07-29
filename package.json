@@ -3,14 +3,21 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server/dev.mjs",
     "build": "next build && node scripts/prepare-sites-build.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "leads:list": "node scripts/list-contact-leads.mjs",
     "lint": "eslint .",
-    "preview": "serve dist/client",
+    "preview": "node server/index.mjs",
+    "start": "node server/index.mjs",
     "test": "vitest run",
+    "test:architecture": "node --test tests/next-architecture.test.mjs",
+    "test:server": "node --test tests/contact-server.test.mjs tests/dev-server-lifecycle.test.mjs",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:sites": "node --test tests/sites-worker.test.mjs"
@@ -34,7 +41,6 @@
     "globals": "^16.5.0",
     "jsdom": "^26.1.0",
     "prettier": "^3.6.2",
-    "serve": "^14.2.6",
     "vitest": "^3.2.4"
   }
 }

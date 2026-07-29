@@ -17,12 +17,29 @@
 
 ## 本地运行
 
-需要 Node.js 20 或更高版本。
+需要 Node.js 22.13 或更高版本。
 
 ```bash
 npm install
 npm run dev
 ```
+
+开发服务同时运行 Next.js 页面和真实联系信息接口，提交数据写入
+`data/contact-leads.sqlite3`。生产方式先构建，再启动 Node.js 服务：
+
+```bash
+npm run build
+npm start
+```
+
+查看最近 200 条联系信息：
+
+```bash
+npm run leads:list
+```
+
+服务器使用其他数据库路径时，通过 `XUANBAI_DB_PATH` 指定实际文件。
+联系信息只允许提交，不提供公开查询接口。
 
 ## 质量检查
 
@@ -30,6 +47,8 @@ npm run dev
 npm run format:check
 npm run lint
 npm test
+npm run test:server
+npm run test:architecture
 npm run build
 npm run test:sites
 ```
@@ -43,10 +62,11 @@ npm run test:e2e
 
 ## 技术栈
 
-Next.js App Router、React、Phosphor Icons、Vitest、Testing Library 与 Playwright。
+Next.js App Router、React、Node.js、SQLite、Phosphor Icons、Vitest、Testing
+Library 与 Playwright。
 
 所有公开页面会在构建时生成独立 HTML，页面标题与简介也分别维护。共享导航、联系表单和产品展示组件继续放在 `src/`，新增产品时在 `src/app/` 增加路由入口，并在 `src/views/` 组织页面内容。
 
 ## 当前说明
 
-联系表单目前完成了前端交互与状态反馈，尚未接入真实提交接口。产品页面使用了各项目的真实界面截图；`design-references/` 保留了本次改版选定的视觉方向，方便后续持续校准。
+联系表单通过同域名的 `/api/contact-leads` 接口写入 SQLite，数据库确认成功后页面才显示提交完成。产品页面使用了各项目的真实界面截图；`design-references/` 保留了本次改版选定的视觉方向，方便后续持续校准。

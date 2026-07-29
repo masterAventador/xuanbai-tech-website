@@ -64,12 +64,22 @@ test("联系合作表单提供校验与成功反馈", async ({ page }) => {
   await page.getByRole("button", { name: "提交联系信息" }).click();
   await expect(page.locator(".form-error")).toHaveText("请填写称呼和联系方式");
 
+  await page.getByRole("button", { name: "想了解什么：企业 AI 中台" }).click();
+  await page.getByRole("option", { name: "AI 设计与内容创作" }).click();
+
+  const uniqueContact = `e2e-${Date.now()}@xuanbai.tech`;
   await page.getByLabel("怎么称呼你").fill("玄白访客");
-  await page.getByLabel("联系方式").fill("example@xuanbai.tech");
+  await page.getByLabel("联系方式").fill(uniqueContact);
+  await page.getByLabel("补充说明").fill("真实链路自动化验收");
   await page.getByRole("button", { name: "提交联系信息" }).click();
   await expect(
     page.getByRole("heading", { name: "已收到，我们会尽快联系你。" }),
   ).toBeVisible();
+
+  const persisted = await page.request.get(
+    `/api/test-only/contact-leads/${encodeURIComponent(uniqueContact)}`,
+  );
+  expect(persisted.status()).toBe(404);
 });
 
 test("千手明确自动发布、自运营与消息来源", async ({ page }) => {

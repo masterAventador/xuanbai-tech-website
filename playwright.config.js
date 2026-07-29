@@ -26,7 +26,12 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run preview -- --listen tcp://127.0.0.1:4174 --no-clipboard",
+    command: "npm run preview",
+    env: {
+      HOST: "127.0.0.1",
+      PORT: "4174",
+      XUANBAI_DB_PATH: ".tmp/e2e-contact-leads.sqlite3",
+    },
     url: "http://127.0.0.1:4174",
     reuseExistingServer: !process.env.CI,
   },

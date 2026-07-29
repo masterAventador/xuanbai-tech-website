@@ -1894,13 +1894,16 @@ ul {
   grid-column: 1 / -1;
 }
 
+.contact-form .scene-field {
+  grid-column: 1 / -1;
+}
+
 .contact-form label > span {
   color: #bdc7cb;
   font-size: 12px;
 }
 
 .contact-form input,
-.contact-form select,
 .contact-form textarea {
   width: 100%;
   border: 1px solid var(--line);
@@ -1911,7 +1914,7 @@ ul {
 }
 
 .contact-form input,
-.contact-form select {
+.custom-select-trigger {
   height: 48px;
   padding: 0 14px;
 }
@@ -1922,13 +1925,116 @@ ul {
 }
 
 .contact-form input:focus,
-.contact-form select:focus,
 .contact-form textarea:focus {
   border-color: var(--cyan);
 }
 
+.custom-select {
+  position: relative;
+}
+
+.custom-select-trigger {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #071018;
+  color: #eef2f4;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.custom-select-trigger:hover,
+.custom-select-trigger:focus-visible,
+.custom-select-trigger.is-open {
+  border-color: var(--cyan);
+  outline: none;
+  background: #09151d;
+}
+
+.custom-select-trigger svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: var(--cyan-soft);
+  transition: transform 180ms ease;
+}
+
+.custom-select-trigger.is-open svg {
+  transform: rotate(180deg);
+}
+
+.custom-select-options {
+  position: absolute;
+  z-index: 4;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  padding: 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: #0b171f;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.46);
+}
+
+.custom-select-options button {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: transparent;
+  color: #cbd4d8;
+  cursor: pointer;
+  text-align: left;
+}
+
+.custom-select-options button:hover,
+.custom-select-options button:focus-visible {
+  outline: none;
+  background: rgba(86, 220, 224, 0.09);
+  color: #ffffff;
+}
+
+.custom-select-options button.is-selected {
+  background: rgba(86, 220, 224, 0.14);
+  color: var(--cyan-soft);
+}
+
+.custom-select-options button svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--cyan);
+}
+
+.contact-honeypot {
+  position: absolute;
+  width: 1px !important;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .contact-form .button {
   grid-column: 1 / -1;
+}
+
+.contact-form .button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
 }
 
 .form-error {
@@ -2341,6 +2447,7 @@ ul {
   }
 
   .contact-form label:last-of-type,
+  .contact-form .scene-field,
   .contact-form .button,
   .form-error {
     grid-column: auto;

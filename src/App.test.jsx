@@ -26,6 +26,7 @@ function renderPage(Page, { pathname = "/" } = {}) {
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
   navigationState.pathname = "/";
 });
 
@@ -104,8 +105,14 @@ describe("玄白科技官网", () => {
     expect(mainNavigation.getElementsByClassName("is-active")).toHaveLength(1);
   });
 
-  it("联系表单校验必填项并给出提交成功反馈", async () => {
+  it("联系表单使用自定义产品下拉框，并且后端真实接收后才显示成功", async () => {
     const user = userEvent.setup();
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ id: "lead-001", ok: true }), {
+        headers: { "content-type": "application/json" },
+        status: 201,
+      }),
+    );
     renderPage(HomePage);
 
     await user.click(screen.getAllByRole("button", { name: "联系合作" })[0]);
@@ -116,11 +123,69 @@ describe("玄白科技官网", () => {
     await user.click(screen.getByRole("button", { name: "提交联系信息" }));
     expect(screen.getByText("请填写称呼和联系方式")).toBeInTheDocument();
 
+    const sceneTrigger = screen.getByRole("button", {
+      name: "想了解什么：企业 AI 中台",
+    });
+    expect(sceneTrigger).toHaveAttribute("aria-expanded", "false");
+    await user.click(sceneTrigger);
+    expect(sceneTrigger).toHaveAttribute("aria-expanded", "true");
+
+    const listbox = screen.getByRole("listbox", { name: "想了解什么" });
+    await user.click(
+      within(listbox).getByRole("option", {
+        name: "AI 设计与内容创作",
+      }),
+    );
+    expect(sceneTrigger).toHaveTextContent("AI 设计与内容创作");
+
+    await user.type(screen.getByLabelText("怎么称呼你"), "林先生");
+    await user.type(screen.getByLabelText("联系方式"), "lin@example.com");
+    await user.type(screen.getByLabelText("补充说明"), "想预约一次产品演示");
+    await user.click(screen.getByRole("button", { name: "提交联系信息" }));
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/contact-leads",
+      expect.objectContaining({
+        body: JSON.stringify({
+          contact: "lin@example.com",
+          name: "林先生",
+          note: "想预约一次产品演示",
+          scene: "AI 设计与内容创作",
+          sourcePath: "/",
+          website: "",
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      }),
+    );
+    expect(
+      await screen.findByText("已收到，我们会尽快联系你。"),
+    ).toBeInTheDocument();
+  });
+
+  it("联系信息没有成功落库时保留表单并提示重试", async () => {
+    const user = userEvent.setup();
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ message: "数据库暂时不可用" }), {
+        headers: { "content-type": "application/json" },
+        status: 503,
+      }),
+    );
+    renderPage(HomePage);
+
+    await user.click(screen.getAllByRole("button", { name: "联系合作" })[0]);
     await user.type(screen.getByLabelText("怎么称呼你"), "林先生");
     await user.type(screen.getByLabelText("联系方式"), "lin@example.com");
     await user.click(screen.getByRole("button", { name: "提交联系信息" }));
 
-    expect(screen.getByText("已收到，我们会尽快联系你。")).toBeInTheDocument();
+    expect(
+      await screen.findByText("提交没有成功，请稍后再试。"),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText("怎么称呼你")).toHaveValue("林先生");
+    expect(
+      screen.queryByText("已收到，我们会尽快联系你。"),
+    ).not.toBeInTheDocument();
   });
 
   it("窄屏导航可以展开和关闭", async () => {

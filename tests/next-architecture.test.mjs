@@ -12,14 +12,17 @@ test("uses Next.js App Router with a static Sites-compatible build", async () =>
   const packageJson = JSON.parse(await read("package.json"));
   const nextConfig = await read("next.config.mjs");
 
-  assert.match(packageJson.scripts.dev, /^next dev\b/);
+  assert.equal(packageJson.scripts.dev, "node server/dev.mjs");
+  assert.equal(packageJson.scripts.start, "node server/index.mjs");
   assert.match(packageJson.scripts.build, /^next build\b/);
-  assert.equal(packageJson.scripts.preview, "serve dist/client");
+  assert.equal(packageJson.scripts.preview, "node server/index.mjs");
   assert.ok(packageJson.dependencies.next);
   assert.equal(packageJson.dependencies["react-router-dom"], undefined);
   assert.equal(packageJson.dependencies.vite, undefined);
   assert.match(nextConfig, /output:\s*["']export["']/);
   assert.match(nextConfig, /distDir:\s*["']dist\/client["']/);
+  await access(new URL("server/dev.mjs", ROOT));
+  await access(new URL("server/index.mjs", ROOT));
 });
 
 test("defines a shared layout and metadata for every public page", async () => {
@@ -103,4 +106,7 @@ test("ships a brand favicon with the static site", async () => {
 
   assert.match(icon, /<svg\b/);
   assert.match(icon, /玄白科技/);
+  assert.match(icon, /玄白科技立方体标志/);
+  assert.match(icon, /#f5f7f8/i);
+  assert.doesNotMatch(icon, /door-light|floor-light|#f5b96f|#b96332/i);
 });

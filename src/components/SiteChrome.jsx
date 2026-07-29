@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
+  CaretDown,
+  Check,
   CheckCircle,
   CubeFocus,
   List,
@@ -16,6 +18,13 @@ const NAV_ITEMS = [
   { label: "白泽", to: "/baize" },
   { label: "天工", to: "/tiangong" },
   { label: "千手", to: "/qianshou" },
+];
+
+const CONTACT_SCENES = [
+  "企业 AI 中台",
+  "AI 设计与内容创作",
+  "桌面端 RPA 自运营",
+  "综合合作",
 ];
 
 export function Brand() {
@@ -98,12 +107,91 @@ export function SiteHeader({ onContact }) {
   );
 }
 
+function ContactSceneSelect({ onChange, value }) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+
+    const closeOnOutsideClick = (event) => {
+      if (!rootRef.current?.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
+
+  const choose = (scene) => {
+    onChange(scene);
+    setOpen(false);
+  };
+
+  return (
+    <div className="custom-select" ref={rootRef}>
+      <button
+        aria-controls="contact-scene-options"
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-label={`想了解什么：${value}`}
+        className={
+          open ? "custom-select-trigger is-open" : "custom-select-trigger"
+        }
+        onClick={() => setOpen((current) => !current)}
+        type="button"
+      >
+        <span>{value}</span>
+        <CaretDown aria-hidden="true" />
+      </button>
+      {open ? (
+        <div
+          aria-label="想了解什么"
+          className="custom-select-options"
+          id="contact-scene-options"
+          role="listbox"
+        >
+          {CONTACT_SCENES.map((scene) => {
+            const selected = scene === value;
+            return (
+              <button
+                aria-selected={selected}
+                className={selected ? "is-selected" : undefined}
+                key={scene}
+                onClick={() => choose(scene)}
+                role="option"
+                type="button"
+              >
+                <span>{scene}</span>
+                {selected ? <Check aria-hidden="true" weight="bold" /> : null}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function ContactModal({ open, onClose }) {
   const [formState, setFormState] = useState({
     name: "",
     contact: "",
     scene: "企业 AI 中台",
     note: "",
+    website: "",
   });
   const [status, setStatus] = useState("idle");
 
@@ -126,21 +214,52 @@ export function ContactModal({ open, onClose }) {
     return null;
   }
 
-  const updateField = (event) => {
-    const { name, value } = event.target;
-    setFormState((current) => ({ ...current, [name]: value }));
-    if (status !== "idle") {
+  const resetErrorStatus = () => {
+    if (status === "validation-error" || status === "submit-error") {
       setStatus("idle");
     }
   };
 
-  const submit = (event) => {
+  const updateField = (event) => {
+    const { name, value } = event.target;
+    setFormState((current) => ({ ...current, [name]: value }));
+    resetErrorStatus();
+  };
+
+  const updateScene = (scene) => {
+    setFormState((current) => ({ ...current, scene }));
+    resetErrorStatus();
+  };
+
+  const submit = async (event) => {
     event.preventDefault();
     if (!formState.name.trim() || !formState.contact.trim()) {
-      setStatus("error");
+      setStatus("validation-error");
       return;
     }
-    setStatus("success");
+
+    setStatus("submitting");
+    try {
+      const response = await fetch("/api/contact-leads", {
+        body: JSON.stringify({
+          contact: formState.contact.trim(),
+          name: formState.name.trim(),
+          note: formState.note.trim(),
+          scene: formState.scene,
+          sourcePath: window.location.pathname,
+          website: formState.website,
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Contact form submission failed");
+      }
+      setStatus("success");
+    } catch {
+      setStatus("submit-error");
+    }
   };
 
   return (
@@ -202,18 +321,12 @@ export function ContactModal({ open, onClose }) {
                   value={formState.contact}
                 />
               </label>
-              <label>
+              <label className="scene-field">
                 <span>想了解什么</span>
-                <select
-                  name="scene"
-                  onChange={updateField}
+                <ContactSceneSelect
+                  onChange={updateScene}
                   value={formState.scene}
-                >
-                  <option>企业 AI 中台</option>
-                  <option>AI 设计与内容创作</option>
-                  <option>桌面端 RPA 自运营</option>
-                  <option>综合合作</option>
-                </select>
+                />
               </label>
               <label>
                 <span>补充说明</span>
@@ -225,13 +338,31 @@ export function ContactModal({ open, onClose }) {
                   value={formState.note}
                 />
               </label>
-              {status === "error" ? (
+              <input
+                aria-hidden="true"
+                autoComplete="off"
+                className="contact-honeypot"
+                name="website"
+                onChange={updateField}
+                tabIndex="-1"
+                value={formState.website}
+              />
+              {status === "validation-error" ? (
                 <p className="form-error" role="alert">
                   请填写称呼和联系方式
                 </p>
               ) : null}
-              <button className="button button-primary" type="submit">
-                提交联系信息
+              {status === "submit-error" ? (
+                <p className="form-error" role="alert">
+                  提交没有成功，请稍后再试。
+                </p>
+              ) : null}
+              <button
+                className="button button-primary"
+                disabled={status === "submitting"}
+                type="submit"
+              >
+                {status === "submitting" ? "正在提交…" : "提交联系信息"}
                 <ArrowRight aria-hidden="true" />
               </button>
             </form>
