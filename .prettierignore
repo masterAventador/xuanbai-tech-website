@@ -1,0 +1,8 @@
+dist
+node_modules
+design-references
+public/assets
+package-lock.json
+scripts/prepare-sites-build.mjs
+tests/sites-worker.test.mjs
+worker/index.js
