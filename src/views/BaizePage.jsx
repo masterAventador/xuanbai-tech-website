@@ -24,35 +24,41 @@ import {
 const CAPABILITIES = [
   {
     number: "01",
-    title: "汇聚企业知识",
-    copy: "连接文档、网页、数据库与业务资料，把分散信息沉淀成可检索、可追溯的企业知识资产。",
+    title: "连接并持续更新知识",
+    copy: "连接企业内部文档、网页、数据库与业务资料，把分散信息沉淀成可检索、可追溯的知识资产，并支持知识库定时自动更新。",
     icon: Database,
-    details: ["文档与文件", "网页内容", "业务数据库", "权限继承"],
+    details: ["内部文档", "业务数据库", "定时同步", "权限继承"],
   },
   {
     number: "02",
-    title: "封装业务能力",
-    copy: "把 HTTP API、MCP 服务与内部工具变成 AI 可以按权限调用、按规则执行的企业能力。",
+    title: "连接企业现有业务系统",
+    copy: "无需重建 CRM、ERP、OA 或运营看板，数字员工即可在授权范围内查询数据、发起流程并完成真实业务任务。",
     icon: PlugsConnected,
-    details: ["HTTP 接口", "MCP 服务", "内部工具", "调用审计"],
+    details: ["运营数据", "客户续约", "员工考勤", "流程审批"],
   },
   {
     number: "03",
-    title: "组织数字员工",
-    copy: "按角色配置目标、知识、技能与长期记忆，让数字员工进入真实岗位，而不是停在演示里。",
+    title: "配置可执行的数字员工",
+    copy: "按角色配置知识、业务能力与权限。数字员工理解用户意图，选择已授权的能力完成任务，并根据真实数据解释结果。",
     icon: UserFocus,
-    details: ["角色设定", "知识范围", "业务能力", "协作边界"],
+    details: ["意图理解", "知识范围", "业务权限", "结果解释"],
   },
   {
     number: "04",
-    title: "编排并交付结果",
-    copy: "从理解问题到调用能力、生成结果与人工确认，全过程可追溯、可复核、可停止。",
+    title: "拖拽编排工作流",
+    copy: "通过拖拽节点连接检索、判断、调用与通知步骤，配置完成后既可手动触发，也可按计划定时自动执行。",
     icon: FlowArrow,
-    details: ["工作流编排", "结果核验", "人工确认", "审计记录"],
+    details: ["可视化节点", "定时执行", "异常暂停", "运行记录"],
   },
 ];
 
-const WORKFLOW = ["理解问题", "选择能力", "调用执行", "返回结果", "后续建议"];
+const WORKFLOW = [
+  "理解意图",
+  "检查业务权限",
+  "定位所需数据",
+  "执行业务查询",
+  "解释返回结果",
+];
 
 export function BaizePage() {
   return (
@@ -64,7 +70,7 @@ export function BaizePage() {
             <span className="eyebrow">白泽 · 企业智能中台</span>
             <h1>让企业的知识、系统与 AI，在一处协同。</h1>
             <p className="hero-lead">
-              连接分散的数据和业务能力，为每个团队配置可管理、可审计、能执行的数字员工。
+              用数字员工连接企业知识库与现有业务系统，让人通过一次对话完成检索、查询与业务执行。
             </p>
             <HeroActions
               primary="预约企业演示"
@@ -97,8 +103,8 @@ export function BaizePage() {
             <h3>连接知识与能力，组织数字员工</h3>
             <ul>
               <li>统一检索企业知识，并返回来源</li>
-              <li>按权限调用业务接口和 MCP 服务</li>
-              <li>从问题出发，交付可核验的结果</li>
+              <li>连接企业现有业务系统与数据</li>
+              <li>按权限完成任务，并解释真实返回结果</li>
             </ul>
           </div>
         </div>
@@ -141,8 +147,11 @@ export function BaizePage() {
       <section className="scenario-section container">
         <div className="scenario-copy">
           <span className="eyebrow">示例工作场景</span>
-          <h2>问一句：前天产品日活是多少？</h2>
-          <p>白泽理解你的业务问题，选择可信能力，返回可追溯的结果与依据。</p>
+          <h2>问一句：这个月有哪些客户即将续约？</h2>
+          <p>
+            白泽理解业务意图，检查数字员工权限，调用 CRM
+            中的续约数据，再把结果解释成清晰、可追溯的答案。
+          </p>
         </div>
         <div className="workflow-canvas">
           {WORKFLOW.map((step, index) => (
@@ -152,16 +161,47 @@ export function BaizePage() {
               <small>
                 {
                   [
-                    "识别指标与时间",
-                    "匹配权限与接口",
-                    "传入参数并执行",
-                    "汇总数据与来源",
-                    "给出下一步建议",
+                    "识别续约与时间范围",
+                    "检查角色与数据权限",
+                    "定位续约数据",
+                    "查询 CRM 中的客户记录",
+                    "汇总客户与续约时间",
                   ][index]
                 }
               </small>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="scenario-section container">
+        <div className="scenario-copy">
+          <span className="eyebrow">工作流自动化</span>
+          <h2>拖拽编排，按计划自动执行。</h2>
+          <p>
+            将知识检索、条件判断、业务调用与消息通知连接成工作流，设置每天、每周或指定时间自动运行。
+          </p>
+        </div>
+        <div className="workflow-canvas">
+          {["定时触发", "检索知识", "判断条件", "调用系统", "通知结果"].map(
+            (step, index) => (
+              <div className="workflow-node" key={step}>
+                <span>{index + 1}</span>
+                <strong>{step}</strong>
+                <small>
+                  {
+                    [
+                      "按计划启动工作流",
+                      "读取最新企业资料",
+                      "按业务规则分支",
+                      "执行已授权能力",
+                      "推送结果与运行记录",
+                    ][index]
+                  }
+                </small>
+              </div>
+            ),
+          )}
         </div>
       </section>
 
@@ -201,7 +241,7 @@ export function BaizePage() {
         <SectionIntro
           eyebrow="逐步连接"
           title="从一个场景开始，逐步连接更多业务。"
-          copy="不需要先重建所有系统。先选知识库、业务接口或数字员工其中一个切入点，再平滑扩展。"
+          copy="不需要先重建 CRM、ERP、OA 或运营看板。先选知识库、一个业务场景或一名数字员工作为切入点，再平滑扩展。"
         />
         <div className="start-small-steps">
           <div>
@@ -210,7 +250,7 @@ export function BaizePage() {
           </div>
           <div>
             <CloudArrowUp aria-hidden="true" />
-            <span>先接一个业务接口</span>
+            <span>先连接一个业务场景</span>
           </div>
           <div>
             <Brain aria-hidden="true" />

@@ -32,6 +32,32 @@ test("首页可以进入三款产品详情", async ({ page, isMobile }) => {
   }
 });
 
+test("产品详情页显示当前导航 indicator", async ({ page, isMobile }) => {
+  test.skip(isMobile, "桌面端页签 indicator 由此用例覆盖");
+
+  for (const product of [
+    { name: "白泽", path: "/baize" },
+    { name: "天工", path: "/tiangong" },
+    { name: "千手", path: "/qianshou" },
+  ]) {
+    await page.goto(product.path);
+    const currentLink = page
+      .getByRole("navigation", { name: "主导航" })
+      .getByRole("link", { name: product.name, exact: true });
+    await expect(currentLink).toHaveAttribute("aria-current", "page");
+    await expect(currentLink).toHaveClass(/is-active/);
+  }
+});
+
+test("白泽只呈现业务价值，不公开技术实现路径", async ({ page }) => {
+  await page.goto("/baize");
+  await expect(page.getByText(/知识库定时自动更新/)).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "拖拽编排，按计划自动执行。" }),
+  ).toBeVisible();
+  await expect(page.locator("body")).not.toContainText(/HTTP|MCP|参数映射/i);
+});
+
 test("联系合作表单提供校验与成功反馈", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "联系合作" }).first().click();
@@ -46,11 +72,14 @@ test("联系合作表单提供校验与成功反馈", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("千手明确发布确认与消息来源", async ({ page }) => {
+test("千手明确自动发布、自运营与消息来源", async ({ page }) => {
   await page.goto("/qianshou");
-  await expect(page.getByRole("button", { name: "确认发布" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "自动发布已开启" }),
+  ).toBeVisible();
+  await expect(page.getByText(/微信好友申请/).first()).toBeVisible();
 
-  for (const platform of ["抖音", "微信", "小红书", "快手"]) {
+  for (const platform of ["抖音", "快手", "视频号", "微信"]) {
     await expect(
       page.getByText(platform, { exact: true }).first(),
     ).toBeVisible();

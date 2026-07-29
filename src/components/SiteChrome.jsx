@@ -29,17 +29,24 @@ export function Brand() {
 
 function NavLinks({ onNavigate }) {
   const pathname = usePathname();
+  const currentPath =
+    pathname === "/" ? pathname : pathname.replace(/\/+$/, "");
 
-  return NAV_ITEMS.map((item) => (
-    <Link
-      className={pathname === item.to ? "nav-link is-active" : "nav-link"}
-      href={item.to}
-      key={item.to}
-      onClick={onNavigate}
-    >
-      {item.label}
-    </Link>
-  ));
+  return NAV_ITEMS.map((item) => {
+    const isActive = currentPath === item.to;
+
+    return (
+      <Link
+        aria-current={isActive ? "page" : undefined}
+        className={isActive ? "nav-link is-active" : "nav-link"}
+        href={item.to}
+        key={item.to}
+        onClick={onNavigate}
+      >
+        {item.label}
+      </Link>
+    );
+  });
 }
 
 export function SiteHeader({ onContact }) {
@@ -204,7 +211,7 @@ export function ContactModal({ open, onClose }) {
                 >
                   <option>企业 AI 中台</option>
                   <option>AI 设计与内容创作</option>
-                  <option>AI 新媒体运营</option>
+                  <option>桌面端 RPA 自运营</option>
                   <option>综合合作</option>
                 </select>
               </label>
@@ -240,7 +247,7 @@ export function SiteFooter({ onContact }) {
     <footer className="site-footer">
       <div className="footer-main">
         <Brand />
-        <p>让 AI 真正参与工作，也让人始终保留决定权。</p>
+        <p>让 AI 真正参与工作，也让自动化始终运行在清晰边界内。</p>
         <button className="text-link" onClick={onContact} type="button">
           联系玄白科技
           <ArrowRight aria-hidden="true" />

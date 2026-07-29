@@ -50,7 +50,7 @@ export function TiangongPage() {
             </span>
             <h1>一个工作台，容纳从想法到作品的全过程。</h1>
             <p className="hero-lead">
-              写下需求、带上参考、选择交付形式，让内容、设计与制作在同一个创作空间里持续发生。
+              左侧对话，右侧工作区。写下需求、带上参考，直接生成产品原型、演示文稿、视觉与动态内容。
             </p>
             <HeroActions
               primary="申请体验天工"
@@ -85,6 +85,10 @@ export function TiangongPage() {
               <Check aria-hidden="true" />
               输出可以继续编辑与迭代
             </li>
+            <li>
+              <Check aria-hidden="true" />
+              网页端与桌面端覆盖不同创作现场
+            </li>
           </ul>
         </div>
         <div className="work-mosaic">
@@ -108,7 +112,7 @@ export function TiangongPage() {
           <SectionIntro
             eyebrow="统一起点"
             title="所有创作，共用同一个起点。"
-            copy="一句话开启创作，带上参考资料和设计系统，再选择作品类型与生成模式。天工为你组织下一步。"
+            copy="在左侧用自然语言描述目标，右侧工作区实时承接作品；参考资料、设计系统和历史版本始终留在同一个项目里。"
           />
           <ImagePanel
             alt="天工开始新创作界面"

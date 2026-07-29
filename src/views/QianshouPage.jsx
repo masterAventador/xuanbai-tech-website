@@ -6,7 +6,6 @@ import {
   ShieldCheck,
   Sparkle,
   VideoCamera,
-  Warning,
 } from "@phosphor-icons/react";
 import {
   FinalCta,
@@ -18,19 +17,19 @@ import {
 } from "../components/Shared.jsx";
 
 const OPERATING_FLOW = [
-  { icon: "find", label: "发现热点", copy: "实时捕捉新鲜机会" },
-  { icon: "angle", label: "确定角度", copy: "形成选题和脚本" },
-  { icon: "create", label: "生成视频", copy: "成片与轻量剪辑" },
-  { icon: "approve", label: "人工确认", copy: "确认内容与平台" },
-  { icon: "publish", label: "发布", copy: "进入内容日历" },
-  { icon: "interact", label: "处理互动", copy: "普通消息自动托管" },
+  { icon: "find", label: "发现热点", copy: "追踪近 1 小时机会" },
+  { icon: "angle", label: "生成选题", copy: "形成角度与脚本" },
+  { icon: "create", label: "自动成片", copy: "画面、配音与剪辑" },
+  { icon: "approve", label: "按规则检查", copy: "匹配账号与权限" },
+  { icon: "publish", label: "自动发布", copy: "分发到目标平台" },
+  { icon: "interact", label: "持续运营", copy: "评论、私信与微信" },
 ];
 
 const PLATFORM_ITEMS = [
   { name: "抖音", count: "99+", tone: "douyin" },
-  { name: "微信", count: "67", tone: "wechat" },
-  { name: "小红书", count: "32", tone: "rednote" },
   { name: "快手", count: "18", tone: "kuaishou" },
+  { name: "视频号", count: "67", tone: "wechat" },
+  { name: "微信", count: "32", tone: "wechat" },
 ];
 
 export function QianshouPage() {
@@ -40,10 +39,11 @@ export function QianshouPage() {
         <div className="hero-background" aria-hidden="true" />
         <div className="hero-product-grid container">
           <div className="hero-content">
-            <span className="eyebrow">千手 · AI 新媒体运营</span>
+            <span className="eyebrow">千手 · 桌面端 RPA 自运营平台</span>
             <h1>热点刚出现，内容就开始行动</h1>
             <p className="hero-lead">
-              实时捕捉新鲜热点，立即转化为内容并分发，全流程在一个平台完成，快人一步赢得关注。
+              从近 1
+              小时热点发现、文生视频与自动剪辑，到跨平台发布、评论私信和桌面微信运营，让内容增长持续自动运行。
             </p>
             <HeroActions
               primary="申请产品内测"
@@ -57,7 +57,7 @@ export function QianshouPage() {
 
       <section className="speed-section container">
         <SectionIntro
-          copy="输入关键词，按新鲜度、上升速度与互动质量排序，帮助团队更早看到值得行动的内容。"
+          copy="按动漫、能源等分类持续抓取各平台近 1 小时热点，再按新鲜度、上升速度与互动质量排序，让高流量机会更早进入生产。"
           eyebrow="实时机会"
           title="快，不是多做一步，是少等一步"
         />
@@ -81,22 +81,22 @@ export function QianshouPage() {
       <section className="qianshou-feature container">
         <div className="qianshou-feature-copy">
           <span className="eyebrow">内容生产</span>
-          <h2>创作留在同一个工作台</h2>
+          <h2>一句话成片，素材也能自动剪。</h2>
           <p>
-            从热点进入创作，在“智能素材成片”“品牌动效成片”和“轻量剪辑”之间选择，不额外弹出另一套应用。
+            输入一句话即可生成视频内容并自动合成语音；上传多段素材后，也能自动配音、拼接镜头并去除空白间隙。
           </p>
           <ul className="check-list">
             <li>
               <VideoCamera aria-hidden="true" />
-              从一句想法开始准备脚本与镜头
+              从一句话生成脚本、画面与成片
             </li>
             <li>
               <Sparkle aria-hidden="true" />
-              根据内容目标选择成片方式
+              自动合成语音与字幕
             </li>
             <li>
               <Check aria-hidden="true" />
-              生成后继续进入轻量剪辑
+              自动剪辑并去除空白间隙
             </li>
           </ul>
         </div>
@@ -111,9 +111,9 @@ export function QianshouPage() {
         <div className="container">
           <SectionIntro
             align="center"
-            eyebrow="确认后发布"
-            title="发布前，最后决定权仍在你"
-            copy="AI 可以准备作品、文案与发布时间，但任何发布都不能绕过人工确认。"
+            eyebrow="跨平台自动发布"
+            title="从生成到发布，按你的规则持续运行。"
+            copy="为账号配置平台、时间、分类和权限，千手即可把合规内容自动发布到抖音、快手、视频号等平台；需要时也可开启发布前确认。"
           />
           <div className="approval-canvas">
             <ImagePanel
@@ -123,27 +123,27 @@ export function QianshouPage() {
             <div className="approval-panel">
               <span className="platform-pill">抖音</span>
               <h3>新能源热点：三个判断信号</h3>
-              <p>今天 18:30 · 内容日历</p>
+              <p>今天 18:30 · 自动发布计划</p>
               <div className="approval-checks">
                 <span>
                   <Check aria-hidden="true" />
-                  内容合规性已检查
+                  内容规则已检查
                 </span>
                 <span>
                   <Check aria-hidden="true" />
-                  合作信息已确认
+                  账号权限已匹配
                 </span>
                 <span>
                   <Check aria-hidden="true" />
-                  平台与时间已确认
+                  平台与时间已配置
                 </span>
               </div>
               <button className="button button-primary" type="button">
-                确认发布
+                自动发布已开启
               </button>
               <small>
                 <ShieldCheck aria-hidden="true" />
-                发布确认永远无法被自动化绕过
+                异常、敏感或低置信度内容将暂停并提醒接管
               </small>
             </div>
           </div>
@@ -153,8 +153,8 @@ export function QianshouPage() {
       <section className="interaction-section container">
         <SectionIntro
           eyebrow="消息与互动"
-          title="普通消息交给 AI，重要判断留给人"
-          copy="普通评论与私信默认由 AI 自动回复；投诉、敏感内容、低置信度和风险提示会暂停，等待人工处理。"
+          title="不只发布内容，也持续经营每一次互动。"
+          copy="千手自动回复各平台作品评论和后台私信，也能操作用户电脑上的微信，处理好友申请、打招呼和日常消息回复。"
         />
         <div className="interaction-grid">
           <div className="platform-list">
@@ -181,13 +181,13 @@ export function QianshouPage() {
             </div>
             <div className="message-row">
               <span className="platform-pill">微信</span>
-              <p>你好，想了解一下你们的合作方式。</p>
-              <em>AI 已回复</em>
+              <p>新的好友申请已通过，并自动发送打招呼消息。</p>
+              <em>RPA 已执行</em>
             </div>
-            <div className="message-row is-risk">
-              <span className="platform-pill">小红书</span>
-              <p>这条内容涉及投诉，需要人工判断。</p>
-              <em>等待人工</em>
+            <div className="message-row">
+              <span className="platform-pill">视频号</span>
+              <p>想了解视频里提到的能源数据来源。</p>
+              <em>AI 已回复</em>
             </div>
             <div className="message-row">
               <span className="platform-pill">快手</span>
@@ -197,13 +197,10 @@ export function QianshouPage() {
           </div>
           <div className="ai-rules">
             <ChatCenteredText aria-hidden="true" />
-            <h3>AI 处理规则</h3>
-            <span>普通评论与私信：自动回复</span>
-            <span>有效互动：继续跟进</span>
-            <span>
-              <Warning aria-hidden="true" />
-              投诉与敏感内容：等待人工
-            </span>
+            <h3>自运营能力</h3>
+            <span>作品评论与后台私信：自动回复</span>
+            <span>微信好友申请：自动通过并打招呼</span>
+            <span>微信日常消息：按规则自动回复</span>
           </div>
         </div>
       </section>

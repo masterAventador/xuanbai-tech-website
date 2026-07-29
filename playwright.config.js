@@ -9,6 +9,7 @@ export default defineConfig({
   use: {
     baseURL: "http://127.0.0.1:4174",
     channel: "chrome",
+    headless: true,
     trace: "on-first-retry",
   },
   projects: [
@@ -25,7 +26,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run preview -- --listen 4174 --no-clipboard",
+    command: "npm run preview -- --listen tcp://127.0.0.1:4174 --no-clipboard",
     url: "http://127.0.0.1:4174",
     reuseExistingServer: !process.env.CI,
   },

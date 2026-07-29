@@ -105,7 +105,7 @@ export function BaizeWorkbenchPreview({ compact = false }) {
           </div>
           <div className="trace-block">
             <span>调用业务能力</span>
-            <strong>analytics.query.metrics</strong>
+            <strong>运营数据查询</strong>
             <small>权限校验通过 · 已留痕</small>
           </div>
           <div className="answer-block">

@@ -24,9 +24,9 @@ const QIANSHOU_FLOW = [
   { icon: "find", label: "热点发现", copy: "捕捉刚出现的机会" },
   { icon: "angle", label: "确定角度", copy: "形成选题与脚本" },
   { icon: "create", label: "生成内容", copy: "成片与轻量剪辑" },
-  { icon: "approve", label: "人工确认", copy: "最后决定是否发布" },
-  { icon: "publish", label: "发布分发", copy: "进入内容日历" },
-  { icon: "interact", label: "互动跟进", copy: "普通消息 AI 托管" },
+  { icon: "approve", label: "规则检查", copy: "匹配账号与权限" },
+  { icon: "publish", label: "自动发布", copy: "跨平台持续分发" },
+  { icon: "interact", label: "自运营", copy: "评论、私信与微信" },
 ];
 
 export function HomePage() {
@@ -52,7 +52,7 @@ export function HomePage() {
       <section className="statement-band">
         <p>AI 的价值，不在聊天框里，而在工作发生的地方。</p>
         <span>
-          它应该理解企业知识、生成可用成果，也应该在关键动作前把决定权交还给人。
+          它应该理解企业知识、生成可用成果，也应该在清晰的权限与规则内持续执行。
         </span>
       </section>
 
@@ -66,7 +66,7 @@ export function HomePage() {
             <div>
               <strong>由白泽提供企业知识与数字员工能力</strong>
               <p>
-                连接企业数据、知识和业务能力，让问题可以直接转化为可信结果。
+                连接企业知识和现有业务系统，让数字员工把业务问题直接转化为可信结果。
               </p>
               <ArrowLink to="/baize">了解白泽</ArrowLink>
             </div>
@@ -84,7 +84,7 @@ export function HomePage() {
         <div className="home-story-copy">
           <span className="eyebrow eyebrow-warm">内容创作</span>
           <h2>想法不该困在工具之间。</h2>
-          <p>从界面、汇报到动态内容，让创作在同一个工作台持续发生。</p>
+          <p>左侧对话、右侧创作，从界面、汇报到动态内容持续发生。</p>
           <div className="story-point story-point-warm">
             <Sparkle aria-hidden="true" />
             <div>
@@ -102,7 +102,7 @@ export function HomePage() {
         <div className="container">
           <div className="qianshou-home-head">
             <SectionIntro
-              copy="从发现机会到持续互动，让 AI 承担重复工作，让人把握方向与最终决定。"
+              copy="从发现机会到持续互动，让 AI 按照账号权限与运营规则持续推进，异常情况及时提醒。"
               eyebrow="内容增长"
               title="热点不会等人，内容团队需要在热度发生时行动。"
             />
@@ -118,13 +118,13 @@ export function HomePage() {
           <SectionIntro
             align="center"
             eyebrow="共同原则"
-            title="产品不同，原则相同：AI 负责推进，人保留决定。"
+            title="产品不同，原则相同：AI 持续推进，边界始终清晰。"
           />
           <div className="principle-row">
             <div>
               <ShieldCheck aria-hidden="true" />
-              <strong>重要操作由人确认</strong>
-              <span>发布、执行与敏感动作始终保留人工边界。</span>
+              <strong>自动化遵循权限与规则</strong>
+              <span>发布、执行与互动按照用户配置持续运行。</span>
             </div>
             <div>
               <FlowArrow aria-hidden="true" />
@@ -151,7 +151,8 @@ export function HomePage() {
           </h2>
           <p>
             白泽面向企业知识与业务系统，天工面向设计与内容生产，千手面向新媒体运营。三个产品进入不同工作现场，但都围绕同一件事：让
-            AI 能够理解目标、调用能力、持续推进，并在关键节点把选择交给人。
+            AI
+            能够理解目标、调用能力并持续推进；遇到异常、敏感或低置信度情况时，也能及时暂停并交还处理权。
           </p>
           <button className="text-link" data-contact-trigger type="button">
             和我们聊聊你的工作场景
