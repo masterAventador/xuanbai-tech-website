@@ -1,0 +1,24 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  role="img"
+  aria-labelledby="title"
+>
+  <title id="title">玄白科技</title>
+  <defs>
+    <linearGradient id="door-light" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff4d6" />
+      <stop offset="0.55" stop-color="#f5b96f" />
+      <stop offset="1" stop-color="#b96332" />
+    </linearGradient>
+    <radialGradient id="floor-light" cx="50%" cy="0" r="80%">
+      <stop offset="0" stop-color="#ffc47e" stop-opacity="0.72" />
+      <stop offset="1" stop-color="#ffc47e" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#090a0d" />
+  <path d="M16 53V12h32v41" fill="none" stroke="#34353a" stroke-width="3" />
+  <path d="M23 53V19h18v34" fill="url(#door-light)" />
+  <path d="M32 53H12l20-9 20 9H32Z" fill="url(#floor-light)" />
+  <path d="M23 19h18" stroke="#fff3d8" stroke-opacity="0.7" stroke-width="1.5" />
+</svg>

@@ -34,15 +34,18 @@ npm run build
 npm run test:sites
 ```
 
-端到端测试需要本机安装 Google Chrome：
+端到端测试复用本机全局 Playwright 与用户安装的 Google Chrome，不在项目内重复保存 Playwright。首次安装依赖或执行 `npm install` 后，先建立全局链接：
 
 ```bash
+npm link --no-save @playwright/test playwright
 npm run test:e2e
 ```
 
 ## 技术栈
 
-React、Vite、React Router、Phosphor Icons、Vitest、Testing Library 与 Playwright。
+Next.js App Router、React、Phosphor Icons、Vitest、Testing Library 与 Playwright。
+
+所有公开页面会在构建时生成独立 HTML，页面标题与简介也分别维护。共享导航、联系表单和产品展示组件继续放在 `src/`，新增产品时在 `src/app/` 增加路由入口，并在 `src/views/` 组织页面内容。
 
 ## 当前说明
 

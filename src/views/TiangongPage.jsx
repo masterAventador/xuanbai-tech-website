@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowRight,
   ChatCircleDots,
@@ -36,7 +38,7 @@ const CREATIVE_AREAS = [
   },
 ];
 
-export function TiangongPage({ onContact }) {
+export function TiangongPage() {
   return (
     <main className="product-page tiangong-page">
       <section className="hero hero-product hero-tiangong">
@@ -51,7 +53,6 @@ export function TiangongPage({ onContact }) {
               写下需求、带上参考、选择交付形式，让内容、设计与制作在同一个创作空间里持续发生。
             </p>
             <HeroActions
-              onPrimary={onContact}
               primary="申请体验天工"
               secondary="浏览作品类型"
               secondaryTo="/tiangong#work-types"
@@ -204,7 +205,6 @@ export function TiangongPage({ onContact }) {
       <FinalCta
         copy="在同一个工作台，把想法变成可交付、可继续修改的作品。"
         label="申请体验天工"
-        onContact={onContact}
         title="打开天工，开始下一件作品。"
         tone="warm"
       />

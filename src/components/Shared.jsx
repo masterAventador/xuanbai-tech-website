@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowRight,
   ChartLineUp,
@@ -15,7 +17,7 @@ import {
   UserFocus,
   VideoCamera,
 } from "@phosphor-icons/react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export function SectionIntro({ eyebrow, title, copy, align = "left" }) {
   return (
@@ -29,26 +31,26 @@ export function SectionIntro({ eyebrow, title, copy, align = "left" }) {
 
 export function ArrowLink({ children, to, tone = "cyan" }) {
   return (
-    <Link className={`arrow-link arrow-link-${tone}`} to={to}>
+    <Link className={`arrow-link arrow-link-${tone}`} href={to}>
       {children}
       <ArrowRight aria-hidden="true" />
     </Link>
   );
 }
 
-export function HeroActions({ primary, secondary, onPrimary, secondaryTo }) {
+export function HeroActions({ primary, secondary, secondaryTo }) {
   return (
     <div className="hero-actions">
       <button
         className="button button-primary"
-        onClick={onPrimary}
+        data-contact-trigger
         type="button"
       >
         {primary}
         <ArrowRight aria-hidden="true" />
       </button>
       {secondary ? (
-        <Link className="button button-quiet" to={secondaryTo}>
+        <Link className="button button-quiet" href={secondaryTo}>
           {secondary}
         </Link>
       ) : null}
@@ -204,7 +206,7 @@ export function ImagePanel({ alt, className = "", src }) {
   );
 }
 
-export function FinalCta({ copy, label, onContact, title, tone = "warm" }) {
+export function FinalCta({ copy, label, title, tone = "warm" }) {
   return (
     <section className={`final-cta final-cta-${tone}`}>
       <div>
@@ -213,7 +215,7 @@ export function FinalCta({ copy, label, onContact, title, tone = "warm" }) {
         <p>{copy}</p>
         <button
           className="button button-primary"
-          onClick={onContact}
+          data-contact-trigger
           type="button"
         >
           {label}

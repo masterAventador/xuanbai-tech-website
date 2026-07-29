@@ -1,21 +1,31 @@
 import { expect, test } from "@playwright/test";
 
-test("首页可以进入三款产品详情", async ({ page }) => {
+test("首页可以进入三款产品详情", async ({ page, isMobile }) => {
+  test.skip(isMobile, "移动端导航由专门用例覆盖");
+
   await page.goto("/");
   await expect(
     page.getByRole("heading", { name: "让 AI 真正参与工作" }),
   ).toBeVisible();
 
   for (const product of [
-    { name: "白泽", path: "/baize", heading: "让企业数据，会说话，更会行动" },
-    { name: "天工", path: "/tiangong", heading: "从一个想法，到所有视觉表达" },
+    {
+      name: "白泽",
+      path: "/baize",
+      heading: "让企业的知识、系统与 AI，在一处协同。",
+    },
+    {
+      name: "天工",
+      path: "/tiangong",
+      heading: "一个工作台，容纳从想法到作品的全过程。",
+    },
     { name: "千手", path: "/qianshou", heading: "热点刚出现，内容就开始行动" },
   ]) {
     await page
       .getByRole("link", { name: product.name, exact: true })
       .first()
       .click();
-    await expect(page).toHaveURL(new RegExp(`${product.path}$`));
+    await expect(page).toHaveURL(new RegExp(`${product.path}/?$`));
     await expect(
       page.getByRole("heading", { name: product.heading }),
     ).toBeVisible();
@@ -26,7 +36,7 @@ test("联系合作表单提供校验与成功反馈", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "联系合作" }).first().click();
   await page.getByRole("button", { name: "提交联系信息" }).click();
-  await expect(page.getByRole("alert")).toHaveText("请填写称呼和联系方式");
+  await expect(page.locator(".form-error")).toHaveText("请填写称呼和联系方式");
 
   await page.getByLabel("怎么称呼你").fill("玄白访客");
   await page.getByLabel("联系方式").fill("example@xuanbai.tech");
@@ -56,5 +66,5 @@ test("移动端导航可以展开并进入产品页", async ({ page, isMobile })
     .getByRole("navigation", { name: "移动端导航" })
     .getByRole("link", { name: "白泽", exact: true })
     .click();
-  await expect(page).toHaveURL(/\/baize$/);
+  await expect(page).toHaveURL(/\/baize\/?$/);
 });

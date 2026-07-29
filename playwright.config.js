@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  reporter: "html",
+  reporter: [["html", { open: "never" }]],
   use: {
     baseURL: "http://127.0.0.1:4174",
     channel: "chrome",
@@ -25,7 +25,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev -- --host 127.0.0.1 --port 4174",
+    command: "npm run preview -- --listen 4174 --no-clipboard",
     url: "http://127.0.0.1:4174",
     reuseExistingServer: !process.env.CI,
   },

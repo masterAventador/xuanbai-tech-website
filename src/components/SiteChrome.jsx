@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -6,7 +8,8 @@ import {
   List,
   X,
 } from "@phosphor-icons/react";
-import { Link, NavLink } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { label: "首页", to: "/" },
@@ -17,7 +20,7 @@ const NAV_ITEMS = [
 
 export function Brand() {
   return (
-    <Link className="brand" to="/" aria-label="玄白科技首页">
+    <Link className="brand" href="/" aria-label="玄白科技首页">
       <CubeFocus aria-hidden="true" weight="fill" />
       <span>玄白科技</span>
     </Link>
@@ -25,18 +28,17 @@ export function Brand() {
 }
 
 function NavLinks({ onNavigate }) {
+  const pathname = usePathname();
+
   return NAV_ITEMS.map((item) => (
-    <NavLink
-      className={({ isActive }) =>
-        isActive ? "nav-link is-active" : "nav-link"
-      }
-      end={item.to === "/"}
+    <Link
+      className={pathname === item.to ? "nav-link is-active" : "nav-link"}
+      href={item.to}
       key={item.to}
       onClick={onNavigate}
-      to={item.to}
     >
       {item.label}
-    </NavLink>
+    </Link>
   ));
 }
 
@@ -249,5 +251,34 @@ export function SiteFooter({ onContact }) {
         <span>白泽 · 天工 · 千手</span>
       </div>
     </footer>
+  );
+}
+
+export function SiteShell({ children }) {
+  const [contactOpen, setContactOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname]);
+
+  const openContact = () => setContactOpen(true);
+
+  const handleContentClick = (event) => {
+    if (
+      event.target instanceof Element &&
+      event.target.closest("[data-contact-trigger]")
+    ) {
+      openContact();
+    }
+  };
+
+  return (
+    <div className="site-shell" onClick={handleContentClick}>
+      <SiteHeader onContact={openContact} />
+      {children}
+      <SiteFooter onContact={openContact} />
+      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+    </div>
   );
 }

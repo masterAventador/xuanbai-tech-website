@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowRight,
   Brain,
@@ -52,7 +54,7 @@ const CAPABILITIES = [
 
 const WORKFLOW = ["理解问题", "选择能力", "调用执行", "返回结果", "后续建议"];
 
-export function BaizePage({ onContact }) {
+export function BaizePage() {
   return (
     <main className="product-page baize-page">
       <section className="hero hero-product hero-baize">
@@ -65,7 +67,6 @@ export function BaizePage({ onContact }) {
               连接分散的数据和业务能力，为每个团队配置可管理、可审计、能执行的数字员工。
             </p>
             <HeroActions
-              onPrimary={onContact}
               primary="预约企业演示"
               secondary="了解平台能力"
               secondaryTo="/baize#capabilities"
@@ -221,7 +222,6 @@ export function BaizePage({ onContact }) {
       <FinalCta
         copy="用一个能核验结果的问题，验证 AI 是否真正进入了你的业务。"
         label="预约企业演示"
-        onContact={onContact}
         title="从第一个真实业务场景开始。"
       />
     </main>

@@ -1,61 +1,51 @@
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it } from "vitest";
-import { App } from "./App.jsx";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { SiteShell } from "./components/SiteChrome.jsx";
+import { BaizePage } from "./views/BaizePage.jsx";
+import { HomePage } from "./views/HomePage.jsx";
+import { QianshouPage } from "./views/QianshouPage.jsx";
+import { TiangongPage } from "./views/TiangongPage.jsx";
 
-function renderAt(pathname = "/") {
-  window.history.pushState({}, "", pathname);
-  return render(<App />);
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/",
+}));
+
+function renderPage(Page) {
+  return render(
+    <SiteShell>
+      <Page />
+    </SiteShell>,
+  );
 }
 
 afterEach(() => {
   cleanup();
-  window.history.pushState({}, "", "/");
 });
 
 describe("玄白科技官网", () => {
-  it("从主页进入三个产品详情页", async () => {
-    const user = userEvent.setup();
-    renderAt();
+  it("主页提供三个产品详情入口", () => {
+    renderPage(HomePage);
 
     expect(
       screen.getByRole("heading", { name: "让 AI 真正参与工作" }),
     ).toBeInTheDocument();
-
-    await user.click(screen.getByRole("link", { name: "了解白泽" }));
-    expect(
-      screen.getByRole("heading", {
-        name: "让企业的知识、系统与 AI，在一处协同。",
-      }),
-    ).toBeInTheDocument();
-
-    await user.click(
-      within(screen.getByRole("navigation", { name: "主导航" })).getByRole(
-        "link",
-        { name: "天工" },
-      ),
+    expect(screen.getByRole("link", { name: "了解白泽" })).toHaveAttribute(
+      "href",
+      "/baize",
     );
-    expect(
-      screen.getByRole("heading", {
-        name: "一个工作台，容纳从想法到作品的全过程。",
-      }),
-    ).toBeInTheDocument();
-
-    await user.click(
-      within(screen.getByRole("navigation", { name: "主导航" })).getByRole(
-        "link",
-        { name: "千手" },
-      ),
+    expect(screen.getByRole("link", { name: "了解天工" })).toHaveAttribute(
+      "href",
+      "/tiangong",
     );
-    expect(
-      screen.getByRole("heading", {
-        name: "热点刚出现，内容就开始行动",
-      }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "了解千手" })).toHaveAttribute(
+      "href",
+      "/qianshou",
+    );
   });
 
   it("天工详情页呈现完整创作过程而不是单一工具", () => {
-    renderAt("/tiangong");
+    renderPage(TiangongPage);
 
     expect(screen.getByText("所有创作，共用同一个起点。")).toBeInTheDocument();
     expect(screen.getByText("界面与体验")).toBeInTheDocument();
@@ -64,7 +54,7 @@ describe("玄白科技官网", () => {
   });
 
   it("千手详情页明确发布确认和消息来源", () => {
-    renderAt("/qianshou");
+    renderPage(QianshouPage);
 
     expect(screen.getByText("发布前，最后决定权仍在你")).toBeInTheDocument();
     expect(
@@ -78,7 +68,7 @@ describe("玄白科技官网", () => {
 
   it("联系表单校验必填项并给出提交成功反馈", async () => {
     const user = userEvent.setup();
-    renderAt();
+    renderPage(HomePage);
 
     await user.click(screen.getAllByRole("button", { name: "联系合作" })[0]);
     expect(
@@ -97,7 +87,7 @@ describe("玄白科技官网", () => {
 
   it("窄屏导航可以展开和关闭", async () => {
     const user = userEvent.setup();
-    renderAt();
+    renderPage(BaizePage);
 
     const toggle = screen.getByRole("button", { name: "打开导航" });
     await user.click(toggle);

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowRight,
   Brain,
@@ -27,7 +29,7 @@ const QIANSHOU_FLOW = [
   { icon: "interact", label: "互动跟进", copy: "普通消息 AI 托管" },
 ];
 
-export function HomePage({ onContact }) {
+export function HomePage() {
   return (
     <main>
       <section className="hero hero-home">
@@ -40,7 +42,6 @@ export function HomePage({ onContact }) {
             协同推进，让它不只回答问题，而是真正交付结果。
           </p>
           <HeroActions
-            onPrimary={onContact}
             primary="走进 AI 工作现场"
             secondary="认识玄白科技"
             secondaryTo="/#about"
@@ -152,7 +153,7 @@ export function HomePage({ onContact }) {
             白泽面向企业知识与业务系统，天工面向设计与内容生产，千手面向新媒体运营。三个产品进入不同工作现场，但都围绕同一件事：让
             AI 能够理解目标、调用能力、持续推进，并在关键节点把选择交给人。
           </p>
-          <button className="text-link" onClick={onContact} type="button">
+          <button className="text-link" data-contact-trigger type="button">
             和我们聊聊你的工作场景
             <ArrowRight aria-hidden="true" />
           </button>
@@ -162,7 +163,6 @@ export function HomePage({ onContact }) {
       <FinalCta
         copy="从一个真实问题开始，看看 AI 能在你的工作里推进到哪一步。"
         label="联系合作"
-        onContact={onContact}
         title="让下一次工作，不再从来回切换开始。"
       />
     </main>

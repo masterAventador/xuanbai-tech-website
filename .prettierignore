@@ -1,7 +1,9 @@
 dist
+.next
 node_modules
 design-references
 public/assets
+src/app/icon.svg
 package-lock.json
 scripts/prepare-sites-build.mjs
 tests/sites-worker.test.mjs

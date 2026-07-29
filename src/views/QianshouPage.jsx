@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ChatCenteredText,
   Check,
@@ -31,7 +33,7 @@ const PLATFORM_ITEMS = [
   { name: "快手", count: "18", tone: "kuaishou" },
 ];
 
-export function QianshouPage({ onContact }) {
+export function QianshouPage() {
   return (
     <main className="product-page qianshou-page">
       <section className="hero hero-product hero-qianshou">
@@ -44,7 +46,6 @@ export function QianshouPage({ onContact }) {
               实时捕捉新鲜热点，立即转化为内容并分发，全流程在一个平台完成，快人一步赢得关注。
             </p>
             <HeroActions
-              onPrimary={onContact}
               primary="申请产品内测"
               secondary="了解工作方式"
               secondaryTo="/qianshou#workflow"
@@ -210,7 +211,6 @@ export function QianshouPage({ onContact }) {
       <FinalCta
         copy="更快捕捉、更快创作、更稳发布，让每一次热点都成为内容机会。"
         label="申请产品内测"
-        onContact={onContact}
         title="热点不会等，千手先替你盯着。"
         tone="cyan"
       />
