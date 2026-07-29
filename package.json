@@ -17,7 +17,7 @@
     "start": "node server/index.mjs",
     "test": "vitest run",
     "test:architecture": "node --test tests/next-architecture.test.mjs",
-    "test:server": "node --test tests/contact-server.test.mjs tests/dev-server-lifecycle.test.mjs",
+    "test:server": "node --test tests/contact-server.test.mjs tests/dev-server-lifecycle.test.mjs tests/production-server-lifecycle.test.mjs",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:sites": "node --test tests/sites-worker.test.mjs"
