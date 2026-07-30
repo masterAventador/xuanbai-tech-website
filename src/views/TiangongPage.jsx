@@ -19,18 +19,21 @@ import {
 
 const CREATIVE_AREAS = [
   {
+    id: "prototype-design",
     title: "界面与体验",
     copy: "从信息架构到高保真界面，让产品页面与交互方案可以被看见、讨论和继续修改。",
     image: "/assets/tiangong/design-dashboard.webp",
     icon: Layout,
   },
   {
+    id: "presentation-design",
     title: "表达与汇报",
     copy: "把业务材料、研究结果和策略思路整理成结构清晰、视觉一致的演示与报告。",
     image: "/assets/tiangong/editorial-deck.png",
     icon: PresentationChart,
   },
   {
+    id: "visual-motion",
     title: "视觉与动态内容",
     copy: "生成品牌视觉、动态内容和视频表达，让创意从静态画面延伸到完整叙事。",
     image: "/assets/tiangong/motion-video.png",
@@ -126,7 +129,7 @@ export function TiangongPage() {
         {CREATIVE_AREAS.map((area) => {
           const Icon = area.icon;
           return (
-            <article className="creative-area" key={area.title}>
+            <article className="creative-area" id={area.id} key={area.title}>
               <div className="creative-area-copy">
                 <Icon aria-hidden="true" />
                 <h2>{area.title}</h2>

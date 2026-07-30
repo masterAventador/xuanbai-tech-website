@@ -55,7 +55,7 @@ export function QianshouPage() {
         </div>
       </section>
 
-      <section className="speed-section container">
+      <section className="speed-section container" id="hotspot-discovery">
         <SectionIntro
           copy="按动漫、能源等分类持续抓取各平台近 1 小时热点，再按新鲜度、上升速度与互动质量排序，让高流量机会更早进入生产。"
           eyebrow="实时机会"

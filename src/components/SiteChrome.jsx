@@ -14,10 +14,46 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
-  { label: "首页", to: "/" },
-  { label: "白泽", to: "/baize" },
-  { label: "天工", to: "/tiangong" },
-  { label: "千手", to: "/qianshou" },
+  { label: "首页", path: "/", to: "/" },
+  {
+    defaultForPath: true,
+    hash: "#knowledge-base",
+    label: "企业知识问答",
+    path: "/baize",
+    to: "/baize#knowledge-base",
+  },
+  {
+    hash: "#business-query",
+    label: "业务数据查询",
+    path: "/baize",
+    to: "/baize#business-query",
+  },
+  {
+    defaultForPath: true,
+    hash: "#prototype-design",
+    label: "原型设计",
+    path: "/tiangong",
+    to: "/tiangong#prototype-design",
+  },
+  {
+    hash: "#presentation-design",
+    label: "演示汇报",
+    path: "/tiangong",
+    to: "/tiangong#presentation-design",
+  },
+  {
+    defaultForPath: true,
+    hash: "#hotspot-discovery",
+    label: "热门动态",
+    path: "/qianshou",
+    to: "/qianshou#hotspot-discovery",
+  },
+  {
+    hash: "#workflow",
+    label: "内容自运营",
+    path: "/qianshou",
+    to: "/qianshou#workflow",
+  },
 ];
 
 const CONTACT_SCENES = [
@@ -36,17 +72,60 @@ export function Brand() {
   );
 }
 
-function NavLinks({ onNavigate }) {
-  const pathname = usePathname();
+function scrollToHashTarget(hash) {
+  if (!hash) {
+    return;
+  }
+
+  const targetId = decodeURIComponent(hash.slice(1));
+  const target = document.getElementById(targetId);
+  if (typeof target?.scrollIntoView === "function") {
+    target.scrollIntoView({ block: "start" });
+  }
+}
+
+function useScenarioHash(pathname) {
+  const [currentHash, setCurrentHash] = useState("");
+
+  useEffect(() => {
+    const syncHash = () => {
+      const hash = window.location.hash;
+      setCurrentHash(hash);
+      scrollToHashTarget(hash);
+    };
+
+    syncHash();
+    const frameId = window.requestAnimationFrame(syncHash);
+    const timeoutId = window.setTimeout(syncHash, 100);
+    window.addEventListener("hashchange", syncHash);
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.clearTimeout(timeoutId);
+      window.removeEventListener("hashchange", syncHash);
+    };
+  }, [pathname]);
+
+  return currentHash;
+}
+
+function NavLinks({ currentHash, onNavigate, pathname }) {
   const currentPath =
     pathname === "/" ? pathname : pathname.replace(/\/+$/, "");
+  const defaultHash =
+    NAV_ITEMS.find((item) => item.path === currentPath && item.defaultForPath)
+      ?.hash ?? "";
+  const activeHash = currentHash || defaultHash;
 
   return NAV_ITEMS.map((item) => {
-    const isActive = currentPath === item.to;
+    const isActive =
+      currentPath === item.path &&
+      (item.path === "/" || item.hash === activeHash);
 
     return (
       <Link
-        aria-current={isActive ? "page" : undefined}
+        aria-current={
+          isActive ? (item.path === "/" ? "page" : "location") : undefined
+        }
         className={isActive ? "nav-link is-active" : "nav-link"}
         href={item.to}
         key={item.to}
@@ -60,16 +139,15 @@ function NavLinks({ onNavigate }) {
 
 export function SiteHeader({ onContact }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const currentHash = useScenarioHash(pathname);
 
   return (
     <header className="site-header">
       <div className="header-inner">
         <Brand />
         <nav className="desktop-nav" aria-label="主导航">
-          <NavLinks />
-          <a className="nav-link" href="/#about">
-            关于我们
-          </a>
+          <NavLinks currentHash={currentHash} pathname={pathname} />
         </nav>
         <div className="header-actions">
           <button
@@ -94,14 +172,11 @@ export function SiteHeader({ onContact }) {
         aria-label="移动端导航"
         className={menuOpen ? "mobile-nav is-open" : "mobile-nav"}
       >
-        <NavLinks onNavigate={() => setMenuOpen(false)} />
-        <a
-          className="nav-link"
-          href="/#about"
-          onClick={() => setMenuOpen(false)}
-        >
-          关于我们
-        </a>
+        <NavLinks
+          currentHash={currentHash}
+          onNavigate={() => setMenuOpen(false)}
+          pathname={pathname}
+        />
       </nav>
     </header>
   );

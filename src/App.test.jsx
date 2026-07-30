@@ -28,6 +28,7 @@ afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
   navigationState.pathname = "/";
+  window.history.replaceState({}, "", "/");
 });
 
 describe("玄白科技官网", () => {
@@ -50,6 +51,35 @@ describe("玄白科技官网", () => {
       "/qianshou",
     );
     expect(document.body).not.toHaveTextContent(/最终决定|关键动作前把决定权/);
+  });
+
+  it("主导航按业务场景列出入口并直达对应介绍", () => {
+    renderPage(HomePage);
+
+    const mainNavigation = screen.getByRole("navigation", { name: "主导航" });
+    const scenarios = [
+      ["企业知识问答", "/baize#knowledge-base"],
+      ["业务数据查询", "/baize#business-query"],
+      ["原型设计", "/tiangong#prototype-design"],
+      ["演示汇报", "/tiangong#presentation-design"],
+      ["热门动态", "/qianshou#hotspot-discovery"],
+      ["内容自运营", "/qianshou#workflow"],
+    ];
+
+    for (const [name, href] of scenarios) {
+      expect(
+        within(mainNavigation).getByRole("link", { name, exact: true }),
+      ).toHaveAttribute("href", href);
+    }
+
+    for (const productName of ["白泽", "天工", "千手"]) {
+      expect(
+        within(mainNavigation).queryByRole("link", {
+          name: productName,
+          exact: true,
+        }),
+      ).not.toBeInTheDocument();
+    }
   });
 
   it("天工详情页呈现完整创作过程而不是单一工具", () => {
@@ -93,16 +123,33 @@ describe("玄白科技官网", () => {
     expect(screen.getAllByText("视频号").length).toBeGreaterThan(0);
   });
 
-  it("带尾斜杠的产品路由也会显示当前导航 indicator", () => {
+  it("带锚点的产品路由只高亮当前业务场景", () => {
+    window.history.replaceState({}, "", "/tiangong#presentation-design");
     renderPage(TiangongPage, { pathname: "/tiangong/" });
 
     const mainNavigation = screen.getByRole("navigation", { name: "主导航" });
     const currentLink = within(mainNavigation).getByRole("link", {
-      name: "天工",
-      current: "page",
+      name: "演示汇报",
+      current: "location",
     });
     expect(currentLink).toHaveClass("is-active");
     expect(mainNavigation.getElementsByClassName("is-active")).toHaveLength(1);
+  });
+
+  it("三个产品页为业务场景导航提供真实落点", () => {
+    const baize = renderPage(BaizePage, { pathname: "/baize" });
+    expect(document.querySelector("#knowledge-base")).toBeInTheDocument();
+    expect(document.querySelector("#business-query")).toBeInTheDocument();
+    baize.unmount();
+
+    const tiangong = renderPage(TiangongPage, { pathname: "/tiangong" });
+    expect(document.querySelector("#prototype-design")).toBeInTheDocument();
+    expect(document.querySelector("#presentation-design")).toBeInTheDocument();
+    tiangong.unmount();
+
+    renderPage(QianshouPage, { pathname: "/qianshou" });
+    expect(document.querySelector("#hotspot-discovery")).toBeInTheDocument();
+    expect(document.querySelector("#workflow")).toBeInTheDocument();
   });
 
   it("联系表单使用自定义产品下拉框，并且后端真实接收后才显示成功", async () => {

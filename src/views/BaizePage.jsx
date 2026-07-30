@@ -23,6 +23,7 @@ import {
 
 const CAPABILITIES = [
   {
+    id: "knowledge-base",
     number: "01",
     title: "连接并持续更新知识",
     copy: "连接企业内部文档、网页、数据库与业务资料，把分散信息沉淀成可检索、可追溯的知识资产，并支持知识库定时自动更新。",
@@ -30,6 +31,7 @@ const CAPABILITIES = [
     details: ["内部文档", "业务数据库", "定时同步", "权限继承"],
   },
   {
+    id: "business-query",
     number: "02",
     title: "连接企业现有业务系统",
     copy: "无需重建 CRM、ERP、OA 或运营看板，数字员工即可在授权范围内查询数据、发起流程并完成真实业务任务。",
@@ -37,6 +39,7 @@ const CAPABILITIES = [
     details: ["运营数据", "客户续约", "员工考勤", "流程审批"],
   },
   {
+    id: "digital-employees",
     number: "03",
     title: "配置可执行的数字员工",
     copy: "按角色配置知识、业务能力与权限。数字员工理解用户意图，选择已授权的能力完成任务，并根据真实数据解释结果。",
@@ -44,6 +47,7 @@ const CAPABILITIES = [
     details: ["意图理解", "知识范围", "业务权限", "结果解释"],
   },
   {
+    id: "automated-workflows",
     number: "04",
     title: "拖拽编排工作流",
     copy: "通过拖拽节点连接检索、判断、调用与通知步骤，配置完成后既可手动触发，也可按计划定时自动执行。",
@@ -122,7 +126,11 @@ export function BaizePage() {
             {CAPABILITIES.map((item) => {
               const Icon = item.icon;
               return (
-                <article className="capability-row" key={item.number}>
+                <article
+                  className="capability-row"
+                  id={item.id}
+                  key={item.number}
+                >
                   <span className="capability-number">{item.number}</span>
                   <div className="capability-copy">
                     <Icon aria-hidden="true" />

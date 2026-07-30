@@ -20,5 +20,6 @@ When implementing from a selected generated mock, treat that image as the source
 - The contact form is a real lead-capture workflow: only show success after the backend confirms a durable database write. Keep contact records private and query them from the server database rather than exposing a public listing endpoint.
 - Use a branded custom product selector in the contact form; do not fall back to the operating system's native select menu. The selector spans the form width and keeps its arrow aligned at the far right.
 - The browser favicon uses the same white CubeFocus-style mark as the site header, not the architectural doorway artwork.
+- The primary header navigation is organized by recognizable business scenarios rather than internal product names. Each scenario link lands on the matching capability section inside the relevant product page, and only the current scenario shows the active indicator.
 
 Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts/prepare-sites-build.mjs`, and `tests/sites-worker.test.mjs` intact so the same local prototype can be handed to Sites. Before a Sites handoff, run `npm run build` and `npm run test:sites`; the build must leave `dist/client/index.html`, `dist/server/index.js`, and `dist/.openai/hosting.json`.

@@ -151,6 +151,7 @@ ul {
   padding: 27px 0 24px;
   color: #b5c0c5;
   font-size: 14px;
+  white-space: nowrap;
   transition:
     color 180ms ease,
     opacity 180ms ease;
@@ -180,6 +181,13 @@ ul {
 .nav-link.is-active::after {
   opacity: 1;
   transform: scaleX(1);
+}
+
+.capability-row[id],
+.creative-area[id],
+.speed-section[id],
+.operating-flow[id] {
+  scroll-margin-top: 96px;
 }
 
 .header-actions {

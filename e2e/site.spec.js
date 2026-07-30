@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("首页可以进入三款产品详情", async ({ page, isMobile }) => {
+test("首页业务场景导航直达对应产品介绍", async ({ page, isMobile }) => {
   test.skip(isMobile, "移动端导航由专门用例覆盖");
 
   await page.goto("/");
@@ -8,44 +8,76 @@ test("首页可以进入三款产品详情", async ({ page, isMobile }) => {
     page.getByRole("heading", { name: "让 AI 真正参与工作" }),
   ).toBeVisible();
 
-  for (const product of [
+  for (const scenario of [
     {
-      name: "白泽",
+      name: "企业知识问答",
       path: "/baize",
-      heading: "让企业的知识、系统与 AI，在一处协同。",
+      anchor: "knowledge-base",
     },
     {
-      name: "天工",
-      path: "/tiangong",
-      heading: "一个工作台，容纳从想法到作品的全过程。",
+      name: "业务数据查询",
+      path: "/baize",
+      anchor: "business-query",
     },
-    { name: "千手", path: "/qianshou", heading: "热点刚出现，内容就开始行动" },
+    {
+      name: "原型设计",
+      path: "/tiangong",
+      anchor: "prototype-design",
+    },
+    {
+      name: "演示汇报",
+      path: "/tiangong",
+      anchor: "presentation-design",
+    },
+    {
+      name: "热门动态",
+      path: "/qianshou",
+      anchor: "hotspot-discovery",
+    },
+    {
+      name: "内容自运营",
+      path: "/qianshou",
+      anchor: "workflow",
+    },
   ]) {
     await page
-      .getByRole("link", { name: product.name, exact: true })
-      .first()
+      .getByRole("navigation", { name: "主导航" })
+      .getByRole("link", { name: scenario.name, exact: true })
       .click();
-    await expect(page).toHaveURL(new RegExp(`${product.path}/?$`));
-    await expect(
-      page.getByRole("heading", { name: product.heading }),
-    ).toBeVisible();
+    await expect(page).toHaveURL(
+      new RegExp(`${scenario.path}/?#${scenario.anchor}$`),
+    );
+    await expect(page.locator(`#${scenario.anchor}`)).toBeInViewport();
+    await page.goto("/");
   }
 });
 
-test("产品详情页显示当前导航 indicator", async ({ page, isMobile }) => {
+test("业务场景详情显示唯一当前导航 indicator", async ({ page, isMobile }) => {
   test.skip(isMobile, "桌面端页签 indicator 由此用例覆盖");
 
-  for (const product of [
-    { name: "白泽", path: "/baize" },
-    { name: "天工", path: "/tiangong" },
-    { name: "千手", path: "/qianshou" },
+  for (const scenario of [
+    {
+      name: "业务数据查询",
+      path: "/baize#business-query",
+    },
+    {
+      name: "演示汇报",
+      path: "/tiangong#presentation-design",
+    },
+    {
+      name: "热门动态",
+      path: "/qianshou#hotspot-discovery",
+    },
   ]) {
-    await page.goto(product.path);
-    const currentLink = page
-      .getByRole("navigation", { name: "主导航" })
-      .getByRole("link", { name: product.name, exact: true });
-    await expect(currentLink).toHaveAttribute("aria-current", "page");
+    await page.goto(scenario.path);
+    const navigation = page.getByRole("navigation", { name: "主导航" });
+    const currentLink = navigation.getByRole("link", {
+      name: scenario.name,
+      exact: true,
+    });
+    await expect(currentLink).toHaveAttribute("aria-current", "location");
     await expect(currentLink).toHaveClass(/is-active/);
+    await expect(navigation.locator(".is-active")).toHaveCount(1);
   }
 });
 
@@ -96,14 +128,15 @@ test("千手明确自动发布、自运营与消息来源", async ({ page }) => 
   }
 });
 
-test("移动端导航可以展开并进入产品页", async ({ page, isMobile }) => {
+test("移动端导航可以展开并进入业务场景", async ({ page, isMobile }) => {
   test.skip(!isMobile, "仅在移动端项目运行");
 
   await page.goto("/");
   await page.getByRole("button", { name: "打开导航" }).click();
   await page
     .getByRole("navigation", { name: "移动端导航" })
-    .getByRole("link", { name: "白泽", exact: true })
+    .getByRole("link", { name: "企业知识问答", exact: true })
     .click();
-  await expect(page).toHaveURL(/\/baize\/?$/);
+  await expect(page).toHaveURL(/\/baize\/?#knowledge-base$/);
+  await expect(page.locator("#knowledge-base")).toBeInViewport();
 });
